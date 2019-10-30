@@ -7,7 +7,7 @@ class Led:
 	def __init__(self, color):
 		self.color = self.transform_to_hex(color)
 		self.colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x9400D3]
-		self.pins = {'pin_R': 11, 'pin_G': 12, 'pin_B': 13}
+		self.pins = {'pin_R': 18, 'pin_G': 24, 'pin_B': 22}
 
 		GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
 		for i in self.pins:
