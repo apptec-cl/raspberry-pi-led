@@ -1,2 +1,4 @@
 RPi.GPIO
 git+https://github.com/sn4k3/FakeRPi
+flask-rest-jsonapi
+flask-sqlalchemy
