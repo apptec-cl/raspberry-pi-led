@@ -1,20 +1,20 @@
 
-import FakeRPi.GPIO as GPIO
-# import RPi.GPIO as GPIO
+#import FakeRPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 class Led:
 
 	def __init__(self, color):
 		self.color = self.transform_to_hex(color)
 		self.colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x9400D3]
-		self.pins = {'pin_R': 18, 'pin_G': 24, 'pin_B': 22}
+		self.pins = {'pin_R': 24, 'pin_G': 26, 'pin_B': 13}
         
 	def map(self,x, in_min, in_max, out_min, out_max):
 	        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 	def change_color(self):   # For example : col = 0x112233
 
-		GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
+		GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
 
 		for i in self.pins:
 		        GPIO.setup(self.pins[i], GPIO.OUT)   # Set pins' mode is output
