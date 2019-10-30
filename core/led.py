@@ -38,6 +38,10 @@ class Led:
 		G_val = self.map(G_val, 0, 255, 0, 100)
 		B_val = self.map(B_val, 0, 255, 0, 100)
 		
+		print(100-R_val)
+		print(100-G_val)
+		print(100-B_val)
+
 		p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
 		p_G.ChangeDutyCycle(100-G_val)
 		p_B.ChangeDutyCycle(100-B_val)
