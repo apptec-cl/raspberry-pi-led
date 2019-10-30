@@ -24,6 +24,10 @@ class Led:
 		p_G = GPIO.PWM(self.pins['pin_G'], 2000)
 		p_B = GPIO.PWM(self.pins['pin_B'], 2000)
 		
+		p_R.start(0)      # Initial duty Cycle = 0(leds off)
+		p_G.start(0)
+		p_B.start(0)
+
 		R_val = (self.color & 0x110000) >> 16
 		G_val = (self.color & 0x001100) >> 8
 		B_val = (self.color & 0x000011) >> 0
