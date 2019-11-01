@@ -31,10 +31,21 @@ class ColorSchema(Schema):
 	color = fields.Str(required=True)    
 
 
-colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x9400D3]
-pins = {'pin_R': 24, 'pin_G': 26, 'pin_B': 13}
+class LedMany(ResourceList):
+	schema = ColorSchema
+	data_layer = {'session': db.session, 'model': Color}
+	def before_post(self, args, kwargs, data):
+		print("in")
+class LedOne(ResourceDetail):
+	schema = ColorSchema
+	data_layer = {'session': db.session,'model': Color}
+	
+api = Api(app)
+api.route(LedMany, 'led_many', '/leds')
+api.route(LedOne, 'led_one', '/leds/<int:id>')
 
-GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
+
+GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
 for i in pins:
         GPIO.setup(pins[i], GPIO.OUT)   # Set pins' mode is output
         GPIO.output(pins[i], GPIO.HIGH) # Set pins to high(+3.3V) to off led
@@ -48,51 +59,34 @@ p_G.start(0)
 p_B.start(0)
 
 def map(x, in_min, in_max, out_min, out_max):
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-def transform_to_hex(self, string_hex):
-	hex_str = string_hex
-	hex_int = int(hex_str, 16)
-	new_int = hex_int + 0x200
-	return new_int
 def setColor(col):   # For example : col = 0x112233
-	R_val = (col & 0x110000) >> 16
-	G_val = (col & 0x001100) >> 8
-	B_val = (col & 0x000011) >> 0
-	
-	R_val = map(R_val, 0, 255, 0, 100)
-	G_val = map(G_val, 0, 255, 0, 100)
-	B_val = map(B_val, 0, 255, 0, 100)
-	
-	p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
-	p_G.ChangeDutyCycle(100-G_val)
-	p_B.ChangeDutyCycle(100-B_val)
+        R_val = (col & 0x110000) >> 16
+        G_val = (col & 0x001100) >> 8
+        B_val = (col & 0x000011) >> 0
 
+        R_val = map(R_val, 0, 255, 0, 100)
+        G_val = map(G_val, 0, 255, 0, 100)
+        B_val = map(B_val, 0, 255, 0, 100)
 
-class LedMany(ResourceList):
-	schema = ColorSchema
-	data_layer = {'session': db.session, 'model': Color}
-	def before_post(self, args, kwargs, data):
-		try:
+        p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
+        p_G.ChangeDutyCycle(100-G_val)
+        p_B.ChangeDutyCycle(100-B_val)
+
+try:
         while True:
-			for col in colors:
-				setColor(col)
-				time.sleep(1.0)
-		except KeyboardInterrupt:
-			p_R.stop()
-			p_G.stop()
-			p_B.stop()
-			for i in pins:
-				GPIO.output(pins[i], GPIO.HIGH)    # Turn off all leds
-			GPIO.cleanup()
+                for col in colors:
+                        setColor(col)
+                        time.sleep(1.0)
+except KeyboardInterrupt:
+        p_R.stop()
+        p_G.stop()
+        p_B.stop()
+        for i in pins:
+                GPIO.output(pins[i], GPIO.HIGH)    # Turn off all leds
+        GPIO.cleanup()
 
-class LedOne(ResourceDetail):
-	schema = ColorSchema
-	data_layer = {'session': db.session,'model': Color}
-	
-api = Api(app)
-api.route(LedMany, 'led_many', '/leds')
-api.route(LedOne, 'led_one', '/leds/<int:id>')
 
 # main loop to run app in debug mode
 if __name__ == '__main__':
