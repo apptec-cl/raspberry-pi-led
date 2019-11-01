@@ -31,33 +31,31 @@ p_R.start(0)      # Initial duty Cycle = 0(leds off)
 p_G.start(0)
 p_B.start(0)
 
-def transform_to_hex(string_hex):
-	hex_str = string_hex
-	hex_int = int(hex_str, 16)
-	new_int = hex_int + 0x200
-	return new_int
-
 def map(x, in_min, in_max, out_min, out_max):
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 def setColor(col):   # For example : col = 0x112233
-	R_val = (col & 0x110000) >> 16
-	G_val = (col & 0x001100) >> 8
-	B_val = (col & 0x000011) >> 0
-	
-	R_val = map(R_val, 0, 255, 0, 100)
-	G_val = map(G_val, 0, 255, 0, 100)
-	B_val = map(B_val, 0, 255, 0, 100)
-	print(100-R_val)
-	print(100-G_val)
-	print(100-B_val)
-	p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
-	p_G.ChangeDutyCycle(100-G_val)
-	p_B.ChangeDutyCycle(100-B_val)
+# 	R_val = map(R_val, 0, 255, 0, 100)
+# 	G_val = map(G_val, 0, 255, 0, 100)
+# 	B_val = map(B_val, 0, 255, 0, 100)
 
+	transform = hex_to_rgb(col)
+
+	R_val = map(transform[0], 0, 255, 0, 100)
+	G_val = map(transform[1], 0, 255, 0, 100)
+	B_val = map(transform[2], 0, 255, 0, 100)	
+
+	p_R.ChangeDutyCycle(R_val)     # Change duty cycle
+	p_G.ChangeDutyCycle(G_val)
+	p_B.ChangeDutyCycle(B_val)
+
+def hex_to_rgb(hex):
+	hex = hex.lstrip('#')
+	hlen = len(hex)
+	return tuple(int(hex[i:i+hlen/3], 16) for i in range(0, hlen, hlen/3))
 try:
 	while True:
-		setColor(transform_to_hex(params.c))
+		setColor(params.c)
 except KeyboardInterrupt:
         p_R.stop()
         p_G.stop()
