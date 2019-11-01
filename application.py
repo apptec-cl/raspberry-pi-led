@@ -32,7 +32,7 @@ class ColorSchema(Schema):
 
 
 colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x9400D3]
-pins = {'pin_R':18, 'pin_G':24, 'pin_B':22}  # pins is a dict
+pins = {'pin_R': 24, 'pin_G': 26, 'pin_B': 13}
 
 GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
 for i in pins:
@@ -50,6 +50,11 @@ p_B.start(0)
 def map(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
+def transform_to_hex(self, string_hex):
+	hex_str = string_hex
+	hex_int = int(hex_str, 16)
+	new_int = hex_int + 0x200
+	return new_int
 def setColor(col):   # For example : col = 0x112233
 	R_val = (col & 0x110000) >> 16
 	G_val = (col & 0x001100) >> 8
@@ -69,7 +74,10 @@ class LedMany(ResourceList):
 	data_layer = {'session': db.session, 'model': Color}
 	def before_post(self, args, kwargs, data):
 		try:
-			setColor(col)
+        while True:
+			for col in colors:
+				setColor(col)
+				time.sleep(1.0)
 		except KeyboardInterrupt:
 			p_R.stop()
 			p_G.stop()
