@@ -15,7 +15,7 @@ if params.e == "prod":
 else:
 	import FakeRPi.GPIO as GPIO
 
-colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x9400D3]
+#colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x9400D3]
 pins = {'pin_R':24, 'pin_G':26, 'pin_B':13}  # pins is a dict
 
 GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
@@ -23,9 +23,9 @@ for i in pins:
         GPIO.setup(pins[i], GPIO.OUT)   # Set pins' mode is output
         GPIO.output(pins[i], GPIO.HIGH) # Set pins to high(+3.3V) to off led
 
-p_R = GPIO.PWM(pins['pin_R'], 3000)  # set Frequece to 2KHz
-p_G = GPIO.PWM(pins['pin_G'], 3000)
-p_B = GPIO.PWM(pins['pin_B'], 3000)
+p_R = GPIO.PWM(pins['pin_R'], 4000)  # set Frequece to 2KHz
+p_G = GPIO.PWM(pins['pin_G'], 4000)
+p_B = GPIO.PWM(pins['pin_B'], 4000)
 
 p_R.start(0)      # Initial duty Cycle = 0(leds off)
 p_G.start(0)
@@ -45,6 +45,8 @@ def setColor(col):   # For example : col = 0x112233
 	G_val = map(transform[1], 0, 255, 0, 100)
 	B_val = map(transform[2], 0, 255, 0, 100)	
 
+	print(transform)
+
 	p_R.ChangeDutyCycle(R_val)     # Change duty cycle
 	p_G.ChangeDutyCycle(G_val)
 	p_B.ChangeDutyCycle(B_val)
@@ -55,7 +57,7 @@ def hex_to_rgb(hex):
 	return tuple(int(hex[i:i+hlen/3], 16) for i in range(0, hlen, hlen/3))
 try:
 	while True:
-		setColor(params.c)
+		setColor('#'+params.c)
 except KeyboardInterrupt:
         p_R.stop()
         p_G.stop()
