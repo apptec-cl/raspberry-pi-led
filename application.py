@@ -73,12 +73,12 @@ class LedMany(ResourceList):
 		try:
 			setColor(col)
 		except KeyboardInterrupt:
-	        p_R.stop()
-	        p_G.stop()
-	        p_B.stop()
-	        for i in pins:
-	                GPIO.output(pins[i], GPIO.HIGH)    # Turn off all leds
-	        GPIO.cleanup()
+			p_R.stop()
+			p_G.stop()
+			p_B.stop()
+			for i in pins:
+				GPIO.output(pins[i], GPIO.HIGH)    # Turn off all leds
+			GPIO.cleanup()
 
 class LedOne(ResourceDetail):
 	schema = ColorSchema
