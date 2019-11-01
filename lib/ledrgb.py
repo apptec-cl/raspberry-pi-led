@@ -62,6 +62,7 @@ def hex_to_rgb(hex):
 try:
 	while True:
 		setColor('#'+params.c)
+		time.sleep(1000.0)
 except KeyboardInterrupt:
         p_R.stop()
         p_G.stop()
