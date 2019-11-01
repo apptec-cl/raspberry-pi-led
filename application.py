@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from marshmallow_jsonapi.flask import Schema
 from marshmallow_jsonapi import fields
 from flask_rest_jsonapi import Api, ResourceDetail, ResourceList
-from core.led import Led
 import RPi.GPIO as GPIO
 
 # Create a new Flask application
@@ -49,21 +48,20 @@ p_G.start(0)
 p_B.start(0)
 
 def map(x, in_min, in_max, out_min, out_max):
-        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 def setColor(col):   # For example : col = 0x112233
-        R_val = (col & 0x110000) >> 16
-        G_val = (col & 0x001100) >> 8
-        B_val = (col & 0x000011) >> 0
-
-        R_val = map(R_val, 0, 255, 0, 100)
-        G_val = map(G_val, 0, 255, 0, 100)
-        B_val = map(B_val, 0, 255, 0, 100)
-
-        p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
-        p_G.ChangeDutyCycle(100-G_val)
-        p_B.ChangeDutyCycle(100-B_val)
+	R_val = (col & 0x110000) >> 16
+	G_val = (col & 0x001100) >> 8
+	B_val = (col & 0x000011) >> 0
+	
+	R_val = map(R_val, 0, 255, 0, 100)
+	G_val = map(G_val, 0, 255, 0, 100)
+	B_val = map(B_val, 0, 255, 0, 100)
+	
+	p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
+	p_G.ChangeDutyCycle(100-G_val)
+	p_B.ChangeDutyCycle(100-B_val)
 
 
 class LedMany(ResourceList):
