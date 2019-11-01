@@ -1,6 +1,19 @@
 #!/usr/bin/env python
-import RPi.GPIO as GPIO
 import time
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-c", help="Color in Hexadecimal")
+parser.add_argument("-e", help="Enviroment")
+
+params = parser.parse_args()
+
+
+if params.e == "prod":
+	import RPi.GPIO as GPIO
+else:
+	import FakeRPi.GPIO as GPIO
 
 colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x9400D3]
 pins = {'pin_R':24, 'pin_G':26, 'pin_B':13}  # pins is a dict
@@ -22,25 +35,23 @@ def map(x, in_min, in_max, out_min, out_max):
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 def setColor(col):   # For example : col = 0x112233
-        R_val = (col & 0x110000) >> 16
-        G_val = (col & 0x001100) >> 8
-        B_val = (col & 0x000011) >> 0
-
-        R_val = map(R_val, 0, 255, 0, 100)
-        G_val = map(G_val, 0, 255, 0, 100)
-        B_val = map(B_val, 0, 255, 0, 100)
+	R_val = (col & 0x110000) >> 16
+	G_val = (col & 0x001100) >> 8
+	B_val = (col & 0x000011) >> 0
+	
+	R_val = map(R_val, 0, 255, 0, 100)
+	G_val = map(G_val, 0, 255, 0, 100)
+	B_val = map(B_val, 0, 255, 0, 100)
 	print(100-R_val)
 	print(100-G_val)
 	print(100-B_val)
-        p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
-        p_G.ChangeDutyCycle(100-G_val)
-        p_B.ChangeDutyCycle(100-B_val)
+	p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
+	p_G.ChangeDutyCycle(100-G_val)
+	p_B.ChangeDutyCycle(100-B_val)
 
 try:
-        while True:
-                for col in colors:
-                        setColor(col)
-                        time.sleep(1.0)
+    while True:
+        setColor(params.c)
 except KeyboardInterrupt:
         p_R.stop()
         p_G.stop()

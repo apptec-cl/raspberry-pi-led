@@ -13,7 +13,6 @@ class Led < ApplicationRecord
 
 	def set_color
 		Open3.popen3("python lib/ledrgb.py") do |stdout, stderr|
-			binding.pry
 			puts stdout
 		end
 	end
