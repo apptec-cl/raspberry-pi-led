@@ -8,12 +8,12 @@ start_function(){
 }
 
 stop_function(){
-	kill -9 $(pgrep -f 'python ledrgb')
+	kill -9 $(pgrep -f 'ledrgb.py')
 }
 
 case "$cmd" in
   start)
-  	stop_function
+    stop_function
     start_function
     ;;
   stop)
