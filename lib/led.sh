@@ -4,7 +4,7 @@ color=$2
 
 start_function(){
   echo "Changing led color.."
-  python ledrgb.py -c $color
+  python ledrgb.py -c $color -e prod
 }
 
 stop_function(){
@@ -13,6 +13,7 @@ stop_function(){
 
 case "$cmd" in
   start)
+  	stop_function
     start_function
     ;;
   stop)

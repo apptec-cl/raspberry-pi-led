@@ -31,6 +31,12 @@ p_R.start(0)      # Initial duty Cycle = 0(leds off)
 p_G.start(0)
 p_B.start(0)
 
+def transform_to_hex(string_hex):
+	hex_str = string_hex
+	hex_int = int(hex_str, 16)
+	new_int = hex_int + 0x200
+	return new_int
+
 def map(x, in_min, in_max, out_min, out_max):
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
@@ -50,8 +56,7 @@ def setColor(col):   # For example : col = 0x112233
 	p_B.ChangeDutyCycle(100-B_val)
 
 try:
-    while True:
-        setColor(params.c)
+    setColor(transform_to_hex(params.c))
 except KeyboardInterrupt:
         p_R.stop()
         p_G.stop()
