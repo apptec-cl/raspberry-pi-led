@@ -4,7 +4,7 @@ color=$2
 
 start_function(){
   echo "Changing led color.."
-  python ledrgb.py -c $color -e prod
+  python lib/ledrgb.py -c $color -e prod
 }
 
 stop_function(){

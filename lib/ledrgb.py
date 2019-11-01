@@ -56,7 +56,8 @@ def setColor(col):   # For example : col = 0x112233
 	p_B.ChangeDutyCycle(100-B_val)
 
 try:
-    setColor(transform_to_hex(params.c))
+	while True:
+		setColor(transform_to_hex(params.c))
 except KeyboardInterrupt:
         p_R.stop()
         p_G.stop()

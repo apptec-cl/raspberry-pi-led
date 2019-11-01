@@ -14,6 +14,7 @@ class Led < ApplicationRecord
 
 	def set_color_led
 		cmd_stdout, cmd_stderr, status = Open3.capture3("bash lib/led.sh start 0x0000FF")
+#		binding.pry
 		self.stdout = cmd_stdout
 	end
 end
