@@ -4,6 +4,8 @@ from marshmallow_jsonapi.flask import Schema
 from marshmallow_jsonapi import fields
 from flask_rest_jsonapi import Api, ResourceDetail, ResourceList
 from core.led import Led
+import RPi.GPIO as GPIO
+
 # Create a new Flask application
 app = Flask(__name__)
 
@@ -33,7 +35,7 @@ class ColorSchema(Schema):
 colors = [0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x9400D3]
 pins = {'pin_R':18, 'pin_G':24, 'pin_B':22}  # pins is a dict
 
-GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
+GPIO.setmode(GPIO.BCM)       # Numbers GPIOs by physical location
 for i in pins:
         GPIO.setup(pins[i], GPIO.OUT)   # Set pins' mode is output
         GPIO.output(pins[i], GPIO.HIGH) # Set pins to high(+3.3V) to off led
@@ -68,7 +70,15 @@ class LedMany(ResourceList):
 	schema = ColorSchema
 	data_layer = {'session': db.session, 'model': Color}
 	def before_post(self, args, kwargs, data):
-        setColor(col)
+		try:
+			setColor(col)
+		except KeyboardInterrupt:
+	        p_R.stop()
+	        p_G.stop()
+	        p_B.stop()
+	        for i in pins:
+	                GPIO.output(pins[i], GPIO.HIGH)    # Turn off all leds
+	        GPIO.cleanup()
 
 class LedOne(ResourceDetail):
 	schema = ColorSchema
