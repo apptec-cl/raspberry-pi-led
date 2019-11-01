@@ -23,9 +23,9 @@ for i in pins:
         GPIO.setup(pins[i], GPIO.OUT)   # Set pins' mode is output
         GPIO.output(pins[i], GPIO.HIGH) # Set pins to high(+3.3V) to off led
 
-p_R = GPIO.PWM(pins['pin_R'], 4000)  # set Frequece to 2KHz
-p_G = GPIO.PWM(pins['pin_G'], 4000)
-p_B = GPIO.PWM(pins['pin_B'], 4000)
+p_R = GPIO.PWM(pins['pin_R'], 2000)  # set Frequece to 2KHz
+p_G = GPIO.PWM(pins['pin_G'], 2000)
+p_B = GPIO.PWM(pins['pin_B'], 2000)
 
 p_R.start(0)      # Initial duty Cycle = 0(leds off)
 p_G.start(0)
@@ -44,12 +44,16 @@ def setColor(col):   # For example : col = 0x112233
 	R_val = map(transform[0], 0, 255, 0, 100)
 	G_val = map(transform[1], 0, 255, 0, 100)
 	B_val = map(transform[2], 0, 255, 0, 100)	
-
+	print("-----------")
 	print(transform)
+	print(R_val)
+	print(G_val)
+	print(B_val)
+	print("-----------")
 
-	p_R.ChangeDutyCycle(R_val)     # Change duty cycle
-	p_G.ChangeDutyCycle(G_val)
-	p_B.ChangeDutyCycle(B_val)
+	p_R.ChangeDutyCycle(100-R_val)     # Change duty cycle
+	p_G.ChangeDutyCycle(100-G_val)
+	p_B.ChangeDutyCycle(100-B_val)
 
 def hex_to_rgb(hex):
 	hex = hex.lstrip('#')
