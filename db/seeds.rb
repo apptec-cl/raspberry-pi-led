@@ -1,0 +1,1 @@
+colors = Color.create([{color: "Red", hexadecimal: "0xFF0000"}])
