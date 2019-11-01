@@ -8,7 +8,7 @@ start_function(){
 }
 
 stop_function(){
-	kill $(pgrep -f 'python ledrgb.py')
+	kill -9 $(pgrep -f 'python ledrgb')
 }
 
 case "$cmd" in
