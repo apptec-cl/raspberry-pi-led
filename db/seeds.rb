@@ -1,1 +1,1 @@
-colors = Color.create([{color: "Red", hexadecimal: "FF0000"},{color: "Blue", hexadecimal: "0000FF"},{color: "Green", hexadecimal: "00FF00"}])
+colors = Color.create([{color: "Red", hexadecimal: "FF0000", hue: 65535, color_temperature: 500},{color: "Blue", hexadecimal: "0000FF"},{color: "Green", hexadecimal: "00FF00"}])
