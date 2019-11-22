@@ -5,6 +5,6 @@ class Api::V1::LedsController < ApplicationController
 	end
 	private
 		def led_params
-			params.require(:led).permit(:color_type, :ip)
+			params.require(:led).permit(:color_type, :ip, :group_id)
 		end
 end

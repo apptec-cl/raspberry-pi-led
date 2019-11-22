@@ -1,1 +1,2 @@
-colors = Color.create([{color: "Red", hexadecimal: "FF0000", hue: 65535, color_temperature: 500},{color: "Blue", hexadecimal: "0000FF"},{color: "Green", hexadecimal: "00FF00"}])
+colors = Color.create([{color: "Red", hexadecimal: "FF0000", hue: 65535, color_temperature: 500},{color: "Blue", hexadecimal: "0000FF", hue: 47000},{color: "Green", hexadecimal: "00FF00", hue: 30000, color_temperature: 500}, {color: "Yellow", hexadecimal: "FFFF00", hue: 10000}])
+groups = Group.create([{id: 1, name: "<apptec dev>"},{id: 4, name: "mobysuite"}])

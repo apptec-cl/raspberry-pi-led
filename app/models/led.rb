@@ -15,8 +15,11 @@ class Led < ApplicationRecord
 
 	def set_color_led
 		client = Hue::Client.new
-		group = client.group(self.group.id)
-		group.lights.each { |light| light.hue = self.color.hexadecimal }
+		group = client.group(self.group_id)
+		group.lights.each do |light|
+			light.brightness = 255
+			light.hue = self.color.hue
+		end
 # 		self.stdout = system("bash lib/led.sh start #{self.color.hexadecimal} &> /dev/null &")
 	end
 end

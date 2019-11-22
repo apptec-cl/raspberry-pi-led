@@ -16,7 +16,8 @@ ActiveRecord::Schema.define(version: 2019_11_22_183836) do
     t.string "color"
     t.string "hexadecimal"
     t.string "rgb"
-    t.integer "tone"
+    t.integer "hue"
+    t.integer "color_temperature"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
